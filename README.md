@@ -44,7 +44,7 @@ pip install wendigo
 
 ## Usage
 Wendigo is an event driven application.  
-```
+```python
 from wendigo import Wendigo as w
 
 # Do something here
@@ -56,7 +56,7 @@ w.run()
 ### Hook
 Hook events of keyboard or mouse like this.  
 It works even if another form is active.  
-```
+```python
 from typing import List
 from wendigo import Keys, Wendigo as w
 from wendigo.device import DeviceState
@@ -87,7 +87,7 @@ w.run()
 ### Simulation
 Simulate events of keyboard or mouse like this.  
 Make sure that you activated a text editor before you press the keys.  
-```
+```python
 from wendigo import Keys, Point, Wendigo as w
 from wendigo.device import DeviceState, Inputs
 
