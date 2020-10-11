@@ -1,0 +1,3 @@
+[submodule "wendigocs"]
+	path = wendigocs
+	url = https://github.com/medmsyk/wendigocs.git
