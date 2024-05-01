@@ -2,8 +2,8 @@ import numpy as np
 import warnings
 from collections import namedtuple
 from PIL import ImageGrab
+from PIL.Image import Image
 from time import sleep
-from typing import List, Union
 from wendigo import IS_ADMIN, Colors, Point
 from wendigo.core import Area, Point
 from wendigo.screen.dll import FormController as DllFormController
@@ -17,7 +17,7 @@ class FormController:
     Form controller.
     """
     @classmethod
-    def get_form_info(cls) -> List[FormInfo]:
+    def get_form_info(cls) -> list[FormInfo]:
         """
         Get form information.
 
@@ -78,7 +78,7 @@ class FormController:
         return Colors.to_color(DllFormController.GetColor(position.x, position.y))
 
     @classmethod
-    def _capture(cls, area: Area, scale: float, grayscale: bool, as_array: bool) -> Union["Image", np.ndarray]:
+    def _capture(cls, area: Area, scale: float, grayscale: bool, as_array: bool) -> Image | np.ndarray:
         """
         Capture screen.
 
@@ -102,7 +102,7 @@ class FormController:
         return np.array(image) if as_array else image
 
     @classmethod
-    def capture(cls, area: Area=None, scale: float=1.0, grayscale: bool=False, as_array: bool=False) -> Union["Image", np.ndarray]:
+    def capture(cls, area: Area=None, scale: float=1.0, grayscale: bool=False, as_array: bool=False) -> Image | np.ndarray:
         """
         Capture screen.
 
@@ -121,7 +121,7 @@ class FormController:
 
     @classmethod
     def capture_window(cls, form_class: str=None, form_title: str=None, client_only: bool=False,
-        scale: float=1.0, grayscale: bool=False, as_array: bool=False) -> Union["Image", np.ndarray]:
+        scale: float=1.0, grayscale: bool=False, as_array: bool=False) -> Image | np.ndarray:
         """
         Capture window.
 
@@ -144,5 +144,5 @@ class FormController:
         cls.activate_form(form_class=form_class, form_title=form_title)
         area = cls.get_area(form_class=form_class, form_title=form_title, client_only=client_only)
         if area is None: return None    # Form doesn't exist.
-        
+
         return cls._capture(area, scale, grayscale, as_array)

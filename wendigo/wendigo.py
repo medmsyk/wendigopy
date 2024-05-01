@@ -1,11 +1,10 @@
-from typing import List
 from wendigo import Keys
 from wendigo.application import Wendigo as DllWendigo
 from wendigo.device import EventDispatcher, EventImitator, EventSimulator
 from wendigo.logger import Logger
 from wendigo.process import TimeKeeper
 from wendigo.screen import FormController, TargetMarker, TargetSeeker, TextReader
-from wendigo.system import EventHandler, Keys
+from wendigo.system import Keys
 
 class Wendigo:
     """
@@ -36,7 +35,7 @@ class Wendigo:
         DllWendigo.Notify(title, text, timeout)
 
     @classmethod
-    def add_exit(cls, keys: List[Keys], caption_tasktray: str, caption_handler: str) -> str:
+    def add_exit(cls, keys: list[Keys], caption_tasktray: str, caption_handler: str) -> str:
         """
         Add exit.
 
@@ -59,7 +58,7 @@ class Wendigo:
         return caption_tasktray.format(keys=caption)
 
     @classmethod
-    def run(cls, name: str=None, icon_path: str=None, exit_keys: List[Keys]=[Keys.LShiftKey, Keys.RShiftKey],
+    def run(cls, name: str=None, icon_path: str=None, exit_keys: list[Keys]=[Keys.LShiftKey, Keys.RShiftKey],
         exit_caption_tasktray: str="Exit ({keys})", exit_caption_handler: str="* Press {keys} to exit"):
         """
         Run.

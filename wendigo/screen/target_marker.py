@@ -1,6 +1,7 @@
-from typing import Callable, List, Union
+from collections.abc import Callable
 from wendigo import Area, Colors, Keys
 from wendigo.logger import Logger
+from wendigo.device.core import FormKeys
 from wendigo.screen.dll import TargetMarker as DllTargetMarker, TargetMarkEventHandler
 from wendigo.screen.target_form import TargetForm
 from wendigo.system import Rectangle
@@ -27,7 +28,7 @@ class TargetMarker(DllTargetMarker):
         return TargetForm(cls.Mark(Rectangle(area.x, area.y, area.width, area.height), border_width, border_color))
 
     @classmethod
-    def get_event_handler(cls, event_handler: Callable[[List[TargetForm]], None]) -> TargetMarkEventHandler:
+    def get_event_handler(cls, event_handler: Callable[[list[TargetForm]], None]) -> TargetMarkEventHandler:
         """
         Get an event handler.
 
@@ -47,8 +48,8 @@ class TargetMarker(DllTargetMarker):
         return TargetMarkEventHandler(wrapper)
 
     @classmethod
-    def mark_by_drag(cls, event_handler: Callable[[List[TargetForm]], None],
-        keys: List[Keys]=None, n: int=1, border_width: Union[int, List[int]]=None, border_color: Union[Colors, List[Colors]]=None):
+    def mark_by_drag(cls, event_handler: Callable[[list[TargetForm]], None],
+        keys: list[Keys]=None, n: int=1, border_width: int | list[int]=None, border_color: Colors | list[Colors]=None):
         """
         Mark areas by drag.
 
@@ -60,4 +61,4 @@ class TargetMarker(DllTargetMarker):
         border_width: Border width(s).
         border_color: Border color(s).
         """
-        cls.MarkByDrag(cls.get_event_handler(event_handler), keys, n, border_width, border_color)
+        cls.MarkByDrag(cls.get_event_handler(event_handler), FormKeys(keys), n, border_width, border_color)

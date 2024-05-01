@@ -1,5 +1,5 @@
 from wendigo import Keys, Point
-from wendigo.device.core import Inputs
+from wendigo.device.core import FormKey, Inputs
 from wendigo.device.dll import EventSimulator as DllEventSimulator
 
 class EventSimulator():
@@ -27,7 +27,7 @@ class EventSimulator():
         key: Key.
         n: Number of inputs.
         """
-        DllEventSimulator.KeyDown(key, n)
+        DllEventSimulator.KeyDown(FormKey(key), n)
 
     @classmethod
     def key_up(cls, key: Keys, n: int=1):
@@ -39,7 +39,7 @@ class EventSimulator():
         key: Key.
         n: Number of inputs.
         """
-        DllEventSimulator.KeyUp(key, n)
+        DllEventSimulator.KeyUp(FormKey(key), n)
 
     @classmethod
     def key_press(cls, key: Keys, n: int=1):
@@ -51,7 +51,7 @@ class EventSimulator():
         key: Key.
         n: Number of inputs.
         """
-        DllEventSimulator.KeyPress(key, n)
+        DllEventSimulator.KeyPress(FormKey(key), n)
 
     @classmethod
     def type_text(cls, text: str, n: int=1):

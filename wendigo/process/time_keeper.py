@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 from wendigo.system import Action
 from wendigo.process.dll import TimeKeeper as DllTimeKeeper
 

@@ -1,6 +1,6 @@
 from collections import namedtuple
 from enum import IntEnum
-from typing import List, Union
+from System.Windows.Forms import Keys as FormKey
 from wendigo import Keys
 from wendigo.core import Point
 from wendigo.device.dll import DeviceEventArgs, Inputs as DllInputs
@@ -17,11 +17,22 @@ class DeviceEvent(IntEnum):
     MouseWheel =  4
     MouseTilt  =  5
 
+class FormKeys(list[FormKey]):
+    def __init__(self, keys: Keys | list[Keys]) -> None:
+        """
+        Constructor.
+
+        Parameters
+        ----------
+        keys: Keys.
+        """
+        self.extend([FormKey(key) for key in ([keys] if isinstance(keys, Keys) else keys)])
+
 class Inputs(DllInputs):
     """
     Inputs.
     """
-    def key_down(self, keys: Union[Keys, List[Keys]], n: int=1) -> "Inputs":
+    def key_down(self, keys: Keys | list[Keys], n: int=1) -> "Inputs":
         """
         Define inputs for key down.
 
@@ -34,10 +45,10 @@ class Inputs(DllInputs):
         -------
         inputs: Inputs.
         """
-        super().KeyDown(keys, n)
+        super().KeyDown(FormKeys(keys), n)
         return self
-        
-    def key_up(self, keys: Union[Keys, List[Keys]], n: int=1) -> "Inputs":
+
+    def key_up(self, keys: Keys | list[Keys], n: int=1) -> "Inputs":
         """
         Define inputs for key up.
 
@@ -50,10 +61,10 @@ class Inputs(DllInputs):
         -------
         inputs: Inputs.
         """
-        super().KeyUp(keys, n)
+        super().KeyUp(FormKeys(keys), n)
         return self
-        
-    def key_press(self, keys: Union[Keys, List[Keys]], n: int=1) -> "Inputs":
+
+    def key_press(self, keys: Keys | list[Keys], n: int=1) -> "Inputs":
         """
         Define inputs for key press.
 
@@ -66,10 +77,10 @@ class Inputs(DllInputs):
         -------
         inputs: Inputs.
         """
-        super().KeyPress(keys, n)
+        super().KeyPress(FormKeys(keys), n)
         return self
-        
-    def key_press_text(self, texts: Union[str, List[str]], n: int=1) -> "Inputs":
+
+    def key_press_text(self, texts: str | list[str], n: int=1) -> "Inputs":
         """
         Define inputs for key press by texts.
 
@@ -100,7 +111,7 @@ class Inputs(DllInputs):
         """
         super().Tilt(value, n)
         return self
-        
+
     def wheel(self, value: int, n: int=1) -> "Inputs":
         """
         Define inputs for mouse wheel.
@@ -134,7 +145,7 @@ class DeviceState:
         """
         state = e.State
 
-        self.event_type = DeviceEvent(state.DeviceEvent)
+        self.event_type = DeviceEvent(int(state.DeviceEvent))
         self.key = key_state(
             target=state.Key.Target,
             keys={entry.Key: entry.Value for entry in state.Key.Keys},
@@ -142,7 +153,7 @@ class DeviceState:
 
         position = state.Mouse.Position
         scroll = state.Mouse.Scroll
-        
+
         self.mouse = mouse_state(
             target=state.Mouse.Target,
             position=Point(position.X, position.Y),

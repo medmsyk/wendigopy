@@ -1,6 +1,7 @@
-from typing import Callable, List
+from collections.abc import Callable
 from wendigo import Keys
 from wendigo.device import DeviceState
+from wendigo.device.core import FormKeys
 from wendigo.device.dll import EventDispatcher as DllEventDispatcher, \
      DeviceEventArgs, DeviceEventHandler
 from wendigo.logger import Logger
@@ -52,7 +53,7 @@ class EventDispatcher:
         return DeviceEventHandler(wrapper)
 
     @classmethod
-    def key_down(cls, name: str, keys: List[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
+    def key_down(cls, name: str, keys: list[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
         Listen for key down.
 
@@ -63,10 +64,10 @@ class EventDispatcher:
         event_handler: Event handler.
         for_system: The event is for system or not.
         """
-        DllEventDispatcher.KeyDown(name, keys, cls.get_event_handler(event_handler), for_system)
+        DllEventDispatcher.KeyDown(name, FormKeys(keys), cls.get_event_handler(event_handler), for_system)
 
     @classmethod
-    def key_down_once(cls, name: str, keys: List[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
+    def key_down_once(cls, name: str, keys: list[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
         Listen for key down which is called only once.
 
@@ -77,10 +78,10 @@ class EventDispatcher:
         event_handler: Event handler.
         for_system: The event is for system or not.
         """
-        DllEventDispatcher.KeyDown(name, keys, cls.get_event_handler_once(name, event_handler), for_system)
+        DllEventDispatcher.KeyDown(name, FormKeys(keys), cls.get_event_handler_once(name, event_handler), for_system)
 
     @classmethod
-    def key_up(cls, name: str, keys: List[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
+    def key_up(cls, name: str, keys: list[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
         Listen for key up.
 
@@ -91,10 +92,10 @@ class EventDispatcher:
         event_handler: Event handler.
         for_system: The event is for system or not.
         """
-        DllEventDispatcher.KeyUp(name, keys, cls.get_event_handler(event_handler), for_system)
+        DllEventDispatcher.KeyUp(name, FormKeys(keys), cls.get_event_handler(event_handler), for_system)
 
     @classmethod
-    def key_up_once(cls, name: str, keys: List[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
+    def key_up_once(cls, name: str, keys: list[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
         Listen for key up which is called only once.
 
@@ -105,10 +106,10 @@ class EventDispatcher:
         event_handler: Event handler.
         for_system: The event is for system or not.
         """
-        DllEventDispatcher.KeyUp(name, keys, cls.get_event_handler_once(name, event_handler), for_system)
-    
+        DllEventDispatcher.KeyUp(name, FormKeys(keys), cls.get_event_handler_once(name, event_handler), for_system)
+
     @classmethod
-    def key_press(cls, name: str, keys: List[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
+    def key_press(cls, name: str, keys: list[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
         Listen for key press.
 
@@ -119,10 +120,10 @@ class EventDispatcher:
         event_handler: Event handler.
         for_system: The event is for system or not.
         """
-        DllEventDispatcher.KeyPress(name, keys, cls.get_event_handler(event_handler), for_system)
-    
+        DllEventDispatcher.KeyPress(name, FormKeys(keys), cls.get_event_handler(event_handler), for_system)
+
     @classmethod
-    def key_press_once(cls, name: str, keys: List[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
+    def key_press_once(cls, name: str, keys: list[Keys], event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
         Listen for key press which is called only once.
 
@@ -133,7 +134,7 @@ class EventDispatcher:
         event_handler: Event handler.
         for_system: The event is for system or not.
         """
-        DllEventDispatcher.KeyPress(name, keys, cls.get_event_handler_once(name, event_handler), for_system)
+        DllEventDispatcher.KeyPress(name, FormKeys(keys), cls.get_event_handler_once(name, event_handler), for_system)
 
     @classmethod
     def mouse_move(cls, name: str, event_handler: Callable[[DeviceState], None], for_system: bool=False):
@@ -147,7 +148,7 @@ class EventDispatcher:
         for_system: The event is for system or not.
         """
         DllEventDispatcher.MouseMove(name, cls.get_event_handler(event_handler), for_system)
-    
+
     @classmethod
     def mouse_move_once(cls, name: str, event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
@@ -160,7 +161,7 @@ class EventDispatcher:
         for_system: The event is for system or not.
         """
         DllEventDispatcher.MouseMove(name, cls.get_event_handler_once(name, event_handler), for_system)
-    
+
     @classmethod
     def mouse_wheel(cls, name: str, event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
@@ -173,7 +174,7 @@ class EventDispatcher:
         for_system: The event is for system or not.
         """
         DllEventDispatcher.MouseWheel(name, cls.get_event_handler(event_handler), for_system)
-    
+
     @classmethod
     def mouse_wheel_once(cls, name: str, event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
@@ -186,7 +187,7 @@ class EventDispatcher:
         for_system: The event is for system or not.
         """
         DllEventDispatcher.MouseWheel(name, cls.get_event_handler_once(name, event_handler), for_system)
-    
+
     @classmethod
     def mouse_tilt(cls, name: str, event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """
@@ -199,7 +200,7 @@ class EventDispatcher:
         for_system: The event is for system or not.
         """
         DllEventDispatcher.MouseTilt(name, cls.get_event_handler(event_handler), for_system)
-    
+
     @classmethod
     def mouse_tilt_once(cls, name: str, event_handler: Callable[[DeviceState], None], for_system: bool=False):
         """

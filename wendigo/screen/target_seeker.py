@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from enum import Enum
 from pathlib import Path
-from typing import List, Tuple
+from PIL.Image import Image
 from wendigo.core import Area
 from wendigo.screen.form_controller import FormController
 
@@ -21,7 +21,7 @@ class TargetSeeker:
     """
     @classmethod
     def seek(cls, template: str, scale: float=1.0, threshold: float=0.8,
-        form_class: str=None, form_title: str=None, client_only: bool=False) -> Tuple[Area, float]:
+        form_class: str=None, form_title: str=None, client_only: bool=False) -> tuple[Area, float]:
         """
         Seek a target.
 
@@ -51,12 +51,12 @@ class TargetSeeker:
         res = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
         pt = np.unravel_index(np.argmax(res), res.shape)[::-1]
         probability = res[pt[1]][pt[0]]
-        
+
         s = 1 / scale
         return Area(pt[0] * s, pt[1] * s, width, height) if probability >= threshold else None, probability
 
     @classmethod
-    def _detect(cls, haar_cascade: HaarCascade, image: "Image", scale: float, **kwargs) -> List[Area]:
+    def _detect(cls, haar_cascade: HaarCascade, image: Image, scale: float, **kwargs) -> list[Area]:
         """
         Detect something.
 
@@ -78,17 +78,17 @@ class TargetSeeker:
         return [Area(x * s, y * s, w * s, h * s) for x, y, w, h in detected]
 
     @classmethod
-    def _detect_area(cls, haar_cascade: HaarCascade, area: Area, scale: float, **kwargs) -> List[Area]:
+    def _detect_area(cls, haar_cascade: HaarCascade, area: Area, scale: float, **kwargs) -> list[Area]:
         """
         Detect something in an area.
-        
+
         Parameters
         ----------
         haar_cascade: Haar cascade classifier.
         area: Area.
         scale: Scale.
         kwargs: Args for detectMultiScale.
-        
+
         Returns
         -------
         areas: Areas.
@@ -98,7 +98,7 @@ class TargetSeeker:
 
     @classmethod
     def _detect_window(cls, haar_cascade: HaarCascade,
-        form_class: str, form_title: str, client_only: bool, scale: float, **kwargs) -> List[Area]:
+        form_class: str, form_title: str, client_only: bool, scale: float, **kwargs) -> list[Area]:
         """
         Detect something in a window.
 
@@ -110,7 +110,7 @@ class TargetSeeker:
         client_only: Only the client area or not.
         scale: Scale.
         kwargs: Args for detectMultiScale.
-        
+
         Returns
         -------
         areas: Areas.
@@ -119,7 +119,7 @@ class TargetSeeker:
         return cls._detect(haar_cascade, image, scale, **kwargs) if image is not None else []
 
     @classmethod
-    def detect_frontalfaces(cls, area: Area=None, scale: float=1.0, **kwargs) -> List[Area]:
+    def detect_frontalfaces(cls, area: Area=None, scale: float=1.0, **kwargs) -> list[Area]:
         """
         Detect frontal faces.
 
@@ -134,10 +134,10 @@ class TargetSeeker:
         areas: Areas.
         """
         return cls._detect_area(HaarCascade.Frontalface, area, scale, **kwargs)
-    
+
     @classmethod
     def detect_frontalfaces_window(cls, form_class: str=None, form_title: str=None, client_only: bool=False,
-        scale: float=1.0, **kwargs) -> List[Area]:
+        scale: float=1.0, **kwargs) -> list[Area]:
         """
         Detect frontal faces in a window.
 
@@ -156,7 +156,7 @@ class TargetSeeker:
         return cls._detect_window(HaarCascade.Frontalface, form_class, form_title, client_only, scale, **kwargs)
 
     @classmethod
-    def detect_upperbodies(cls, area: Area=None, scale: float=1.0, **kwargs) -> List[Area]:
+    def detect_upperbodies(cls, area: Area=None, scale: float=1.0, **kwargs) -> list[Area]:
         """
         Detect upper bodies.
 
@@ -171,10 +171,10 @@ class TargetSeeker:
         areas: Areas.
         """
         return cls._detect_area(HaarCascade.Upperbody, area, scale, **kwargs)
-    
+
     @classmethod
     def detect_upperbodies_window(cls, form_class: str=None, form_title: str=None, client_only: bool=False,
-        scale: float=1.0, **kwargs) -> List[Area]:
+        scale: float=1.0, **kwargs) -> list[Area]:
         """
         Detect upper bodies in a window.
 
@@ -193,7 +193,7 @@ class TargetSeeker:
         return cls._detect_window(HaarCascade.Upperbody, form_class, form_title, client_only, scale, **kwargs)
 
     @classmethod
-    def detect_lowerbodies(cls, area: Area=None, scale: float=1.0, **kwargs) -> List[Area]:
+    def detect_lowerbodies(cls, area: Area=None, scale: float=1.0, **kwargs) -> list[Area]:
         """
         Detect lower bodies.
 
@@ -208,10 +208,10 @@ class TargetSeeker:
         areas: Areas.
         """
         return cls._detect_area(HaarCascade.Lower_body, area, scale, **kwargs)
-    
+
     @classmethod
     def detect_lowerbodies_window(cls, form_class: str=None, form_title: str=None, client_only: bool=False,
-        scale: float=1.0, **kwargs) -> List[Area]:
+        scale: float=1.0, **kwargs) -> list[Area]:
         """
         Detect lower bodies in a window.
 
@@ -230,7 +230,7 @@ class TargetSeeker:
         return cls._detect_window(HaarCascade.Lower_body, form_class, form_title, client_only, scale, **kwargs)
 
     @classmethod
-    def detect_fullbodies(cls, area: Area=None, scale: float=1.0, **kwargs) -> List[Area]:
+    def detect_fullbodies(cls, area: Area=None, scale: float=1.0, **kwargs) -> list[Area]:
         """
         Detect full bodies.
 
@@ -245,10 +245,10 @@ class TargetSeeker:
         areas: Areas.
         """
         return cls._detect_area(HaarCascade.Fullbody, area, scale, **kwargs)
-    
+
     @classmethod
     def detect_fullbodies_window(cls, form_class: str=None, form_title: str=None, client_only: bool=False,
-        scale: float=1.0, **kwargs) -> List[Area]:
+        scale: float=1.0, **kwargs) -> list[Area]:
         """
         Detect full bodies in a window.
 

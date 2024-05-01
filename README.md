@@ -7,7 +7,7 @@ WendigoPy is a RPA library for Windows (64 bit).
 
 ## Caution
 
-### About Simulation
+### Simulation
 WendigoPy uses [SendInput](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput) to simulate inputs (implemented as [WendigoCs](https://github.com/medmsyk/wendigocs)).  
 If you're new to it, please be careful of the things below.  
 
@@ -19,7 +19,7 @@ Once you've done it, the inputs which you sent will be unstoppable.
 If you left some keys pressed in your program, press and release the keys manually to recover.  
 * Some kinds of applications ignore this type of simulation.  
 
-### About Exit
+### Exit
 If something went wrong, you should stop Wendigo immediately.  
 These are the ways to exit.  
 
@@ -33,7 +33,7 @@ This way blocks sending new inputs, but remember what I told you before "the inp
 * Windows (64 bit)  
 Testing on Windows 10.  
 * Python 3  
-Testing on 3.8.0.  
+Testing on 3.12.3.  
 * [Tesseract](https://github.com/tesseract-ocr/tesseract)  
 If you wanna use the OCR functions.  
 
@@ -57,7 +57,6 @@ w.run()
 Hook events of keyboard or mouse like this.  
 It works even if another form is active.  
 ```python
-from typing import List
 from wendigo import Keys, Wendigo as w
 from wendigo.device import DeviceState
 from wendigo.screen import TargetForm
@@ -73,12 +72,12 @@ def key_up(state: DeviceState):
 # Runs key_up when you release Ctrl+Alt+W.
 w.event_dispatcher.key_up("key_up", [Keys.ControlKey, Keys.AltKey, Keys.W], key_up)
 
-def mark_by_drag(targets: List[TargetForm]):
+def mark_by_drag(targets: list[TargetForm]):
     # Shows area where you marked.
     print(targets[0].area)
 
-# Runs mark_by_drag when you drag with Ctrl.
-w.target_marker.mark_by_drag(mark_by_drag, keys=[Keys.ControlKey])
+# Runs mark_by_drag when you drag.
+w.target_marker.mark_by_drag(mark_by_drag, keys=[Keys.LButton])
 
 # Blocks until Wendigo is stopped.
 w.run()

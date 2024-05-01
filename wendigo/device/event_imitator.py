@@ -1,5 +1,5 @@
-from typing import List
 from wendigo import Keys
+from wendigo.device.core import FormKeys
 from wendigo.device.dll import EventImitator as DllEventImitator
 
 class EventImitator():
@@ -7,7 +7,7 @@ class EventImitator():
     Event imitator.
     """
     @classmethod
-    def record(cls, path: str, start_keys: List[Keys], stop_keys: List[Keys]):
+    def record(cls, path: str, start_keys: list[Keys], stop_keys: list[Keys]):
         """
         Record device events.
         Key events for start_keys and stop_keys are ignored.
@@ -18,10 +18,10 @@ class EventImitator():
         start_keys: Keys to start recording.
         stop_keys: Keys to stop recording.
         """
-        DllEventImitator.Record(path, start_keys, stop_keys)
+        DllEventImitator.Record(path, FormKeys(start_keys), FormKeys(stop_keys))
 
     @classmethod
-    def play(cls, path: str, start_keys: List[Keys], stop_keys: List[Keys]):
+    def play(cls, path: str, start_keys: list[Keys], stop_keys: list[Keys]):
         """
         Play device events.
 
@@ -31,4 +31,4 @@ class EventImitator():
         start_keys: Keys to start playing.
         stop_keys: Keys to stop playing.
         """
-        DllEventImitator.Play(path, start_keys, stop_keys)
+        DllEventImitator.Play(path, FormKeys(start_keys), FormKeys(stop_keys))
